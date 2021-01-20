@@ -71,7 +71,7 @@ def generate_table(amounts, nutritional_value_dict):
     string_format_2 = "{0:<8}\t{1:<7}{2:1}{3:<5}\t{4:<10}\t{5:<8}\t{6:<11}\t{7:<8}\n"
     first_line = string_format.format("Ingredient", "Use in Unit", "Kcalories", "Fat", "Carbohydrate", "Protein")
     second_line = "-" * 75
-
+    total_values = []
     print("")
     print(first_line)
     print(second_line)
@@ -79,6 +79,11 @@ def generate_table(amounts, nutritional_value_dict):
         unit, kcalories, fat, carbohydrate, protein = nutritional_value_dict[ingredient]
         amount = amounts[ingredient]
         print(string_format_2.format(ingredient + ":", amount, "/", unit, kcalories, fat, carbohydrate, protein))
+        total_values.append(int(amount * kcalories))
+        total_values.append(int(amount * fat))
+        total_values.append(int(amount * carbohydrate))
+        total_values.append(int(amount * protein))
+    print(string_format.format("Totaal:", "", total_values[0], total_values[1], total_values[2], total_values[3]))
 
     file_name = "nutritional_values_table.txt"
     with open(file_name, "w") as assignment_output:
@@ -88,17 +93,10 @@ def generate_table(amounts, nutritional_value_dict):
             unit, kcalories, fat, carbohydrate, protein = nutritional_value_dict[ingredient]
             amount = amounts[ingredient]
             assignment_output.write(string_format_2.format(ingredient + ":", amount, "/", unit, kcalories, fat, carbohydrate, protein))
-        assignment_output.write("Totaal:")
+            #assignment_output.write(string_format.format("Totaal:", "", total_nutritional_value_kcal, total_nutritional_value_fat, total_nutritional_value_carbohydrate, total_nutritional_value_protein))
 
-    for ingredient in ingredients:
-        unit, kcalories, fat, carbohydrate, protein = nutritional_value_dict[ingredient]
-        amount = amounts[ingredient]
-        total_nutritional_value_kcal = amounts[amount] * nutritional_value_dict[kcalories]
-        total_nutritional_value_fat = amounts[amount] * nutritional_value_dict[fat]
-        total_nutritional_value_carbohydrate = amounts[amount] * nutritional_value_dict[carbohydrate]
-        total_nutritional_value_protein = amounts[amount] * nutritional_value_dict[protein]
-        print(total_nutritional_value_fat, total_nutritional_value_kcal, total_nutritional_value_carbohydrate, total_nutritional_value_protein)
 
+    #print(sum(total_nutritional_value_fat), sum(total_nutritional_value_kcal), sum(total_nutritional_value_carbohydrate), sum(total_nutritional_value_protein))
 
     #total_nutritional_value = (sum(kcalories)
     #print(total_nutritional_value_fat, total_nutritional_value_kcal, total_nutritional_value_carbohydrate, total_nutritional_value_protein)
